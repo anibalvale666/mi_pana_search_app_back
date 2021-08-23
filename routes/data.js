@@ -15,13 +15,13 @@ const{ validarJWT } = require('../middlewares/validar-jwt')
 
 const router = Router();
 
+//Obtener registro
+router.get('/', getRegistro);
+
 // cualquier peticion que se encuentre abajo de esto tienen que pasar opr validar token
 router.use( validarJWT );
 
 
-
-//Obtener registro
-router.get('/', getRegistro);
 
 
 //Crear nuevo registro
