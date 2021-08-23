@@ -1,5 +1,5 @@
 const {response} = require('express')
-const Data = require('../models/data')
+const Data = require('../models/Data')
 
 
 
