@@ -63,6 +63,7 @@ const revalidarToken = async(req, res = response) => {
 
     res.json({
         ok: 'true',
+        nick,
         token
     })
 }
