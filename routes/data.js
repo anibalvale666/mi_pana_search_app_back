@@ -18,8 +18,7 @@ const router = Router();
 //Obtener registro
 router.post('/', [
     [
-        check('placa', 'La placa es obligatoria').not().isEmpty(),
-        validarCampos
+        check('placa', 'La placa es obligatoria').not().isEmpty()
     ]    
 ], getRegistro);
 
