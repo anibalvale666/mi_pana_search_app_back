@@ -16,7 +16,12 @@ const{ validarJWT } = require('../middlewares/validar-jwt')
 const router = Router();
 
 //Obtener registro
-router.post('/', getRegistro);
+router.post('/', [
+    [
+        check('placa', 'La placa es obligatoria').not().isEmpty(),
+        validarCampos
+    ]    
+], getRegistro);
 
 // cualquier peticion que se encuentre abajo de esto tienen que pasar opr validar token
 router.use( validarJWT );
