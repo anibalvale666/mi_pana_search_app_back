@@ -10,7 +10,7 @@ const getRegistro = async(req, res = response) => {
     //     plca: ''
     // })
 
-    const data = req.body
+    const data = req.body;
     const placa = data.placa.toUpperCase();
    try {
         const dataf = await Data.findOne({placa});
