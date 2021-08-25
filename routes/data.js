@@ -29,7 +29,7 @@ router.use( validarJWT );
 
 
 //Crear nuevo registro
-router.post('/',[
+router.post('/new',[
     [
         check('placa', 'La placa es obligatoria').not().isEmpty(),
         check('marca', 'La marca es obligatoria').not().isEmpty(),
