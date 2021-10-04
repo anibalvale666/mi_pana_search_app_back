@@ -24,6 +24,8 @@ app.use( express.json() );
 //TODO: auth //login, renew
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/data', require('./routes/data'));
+app.use('/api/filterswishlist', require('./routes/filter'));
+// app.use('/api/accounts', require('./routes/accounts'));
 
 
 //TODO: CRUD: Eventos

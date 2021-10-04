@@ -1,13 +1,12 @@
 
 /*
     Event Routes
-    /api/events
+    /api/data
 */
 
 const {Router} = require("express");
 const { check } = require("express-validator");
 const { getRegistro, crearRegistro, actualizarRegistro } = require("../controllers/data");
-const { isDate } = require("../helpers/isDate");
 const { validarCampos } = require("../middlewares/validar-campos");
 const{ validarJWT } = require('../middlewares/validar-jwt')
 
