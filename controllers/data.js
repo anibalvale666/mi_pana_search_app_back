@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 const {response} = require('express');
 const Data = require('../models/Data');
+=======
+const {response} = require('express')
+const Data = require('../models/Data')
+>>>>>>> db313bb26f523cbd8811b068839f7d8c869b143a
 
 
 
