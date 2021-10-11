@@ -45,6 +45,4 @@ router.delete('/delete/:id', DeleteFilter)
 router.put('/:id',changeDataFilter)
 
 //traer lista de filtro
-
-
 module.exports = router;

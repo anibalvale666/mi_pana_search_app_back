@@ -1,53 +1,47 @@
 const { response } = require('express');
-const Filter = require('../models/Filter');
+const Account = require('../models/Account');
 
-const getFiltersByMonth = async(req, res= response) => {
 
-    const data = req.body;
-    const date = new Date(data.date);
+const getAccountsByBrand = async(req, res= response) => {
+
+    const {brand} = req.body;
 
     try {
-        const filters = await Filter.find({ 
-            date: {
-                  $gte: new Date(new Date(date.getFullYear(),date.getMonth(),1).setHours(00, 00, 00)),
-                  $lt: new Date(new Date(date.getFullYear(),date.getMonth()+1,0).setHours(23, 59, 59))
-                   }
-            }).sort({ date: 'asc'})  
+        const accounts = await Account.find({ 
+            brand: brand
+            })
           
-        if(!filters.length) {
+        if(!accounts.length) {
             return res.status(404).json({
                 ok: false,
-                msg:'no hay filtros para el mes buscado'
+                msg:'no hay cuentas para la marca buscada'
             })
         }
         
         return res.status(200).json({
             ok: true,
-            filters
+            accounts
         });
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({
             ok:false,
             msg: 'Hable con el administrador'
         })
-    }
+    }    
 }
 
 
-
-const createDataFilter= async( req, res = response) => {
-
-    const registro = new Filter( req.body );
+const createAccount = async( req, res = response ) => {
+    const registro = new Account( req.body );
     try {
-
         const registroGuardado = await registro.save();
 
         res.status(201).json({
             ok: true,
-            filter: registroGuardado
+            account: registroGuardado
         });
-        
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -57,17 +51,17 @@ const createDataFilter= async( req, res = response) => {
     }
 }
 
-const changeDataFilter  = async(req, res = response) => {
 
-    const filterId = req.params.id;
+const changeAccount = async( req, res = response) => {
+    const accountId = req.params.id;
     
     try {
-        const record = await Filter.findById(filterId);
+        const record = await Account.findById(accountId);
 
         if( !record ) {
             return res.status(404).json ({
                 ok: false,
-                msg: 'filtro no existe por ese id'
+                msg: 'cuenta no existe por ese id'
             });
         }
 
@@ -75,44 +69,43 @@ const changeDataFilter  = async(req, res = response) => {
             ...req.body
         };
 
-        const recordAct = await Filter.findByIdAndUpdate(filterId, newRecord,{new: true});
+        const recordAct = await Account.findByIdAndUpdate(accountId, newRecord,{new: true});
 
         res.status(201).json({
             ok: true,
-            filter: recordAct
+            account: recordAct
         })
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
         })
+        
     }
 }
 
 
-const DeleteFilter = async (req, res = response) => {
+const deleteAccount = async (req, res = response) => {
 
-    const filterId = req.params.id;
+    const accountId = req.params.id;
 
     try {
-        const record = await Filter.findById(filterId);
+        const record = await Account.findById(accountId);
 
         if( !record ) {
             return res.status(404).json ({
                 ok: false,
-                msg: 'filtro no existe por ese id'
+                msg: 'cuenta no existe por ese id'
             });
         }
 
-
-
-        await Filter.findByIdAndDelete(filterId);
+        await Account.findByIdAndDelete(accountId);
 
         res.status(200).json({
             ok: true,
-            msg: 'filtro eliminado'
+            msg: 'cuenta eliminado'
         });
         
     } catch (error) {
@@ -124,11 +117,9 @@ const DeleteFilter = async (req, res = response) => {
     }
 }
 
-
-
 module.exports = {
-    getFiltersByMonth,
-    createDataFilter,
-    changeDataFilter,
-    DeleteFilter
+    getAccountsByBrand,
+    createAccount,
+    changeAccount,
+    deleteAccount
 }

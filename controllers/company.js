@@ -1,29 +1,20 @@
 const { response } = require('express');
-const Filter = require('../models/Filter');
+const Company = require('../models/Company');
 
-const getFiltersByMonth = async(req, res= response) => {
 
-    const data = req.body;
-    const date = new Date(data.date);
-
+const getCompanies = async(req, res= response) => {
     try {
-        const filters = await Filter.find({ 
-            date: {
-                  $gte: new Date(new Date(date.getFullYear(),date.getMonth(),1).setHours(00, 00, 00)),
-                  $lt: new Date(new Date(date.getFullYear(),date.getMonth()+1,0).setHours(23, 59, 59))
-                   }
-            }).sort({ date: 'asc'})  
-          
-        if(!filters.length) {
+        const companies = await Company.find()  
+        if(!companies.length) {
             return res.status(404).json({
                 ok: false,
-                msg:'no hay filtros para el mes buscado'
+                msg: 'No hay compañias registradas'
             })
         }
         
         return res.status(200).json({
             ok: true,
-            filters
+            companies
         });
     } catch (error) {
         console.log(error);
@@ -36,16 +27,18 @@ const getFiltersByMonth = async(req, res= response) => {
 
 
 
-const createDataFilter= async( req, res = response) => {
+const createCompany= async( req, res = response) => {
 
-    const registro = new Filter( req.body );
+    const registro = new Company( req.body );
+    registro.name = registro.name.toUpperCase();
+    registro.brand = registro.brand.toUpperCase();
+ 
     try {
-
         const registroGuardado = await registro.save();
 
         res.status(201).json({
             ok: true,
-            filter: registroGuardado
+            company: registroGuardado
         });
         
     } catch (error) {
@@ -57,29 +50,29 @@ const createDataFilter= async( req, res = response) => {
     }
 }
 
-const changeDataFilter  = async(req, res = response) => {
+const changeCompany  = async(req, res = response) => {
 
-    const filterId = req.params.id;
-    
+    const companyId = req.params.id;
+
     try {
-        const record = await Filter.findById(filterId);
+        const record = await Company.findById(companyId);
 
         if( !record ) {
             return res.status(404).json ({
                 ok: false,
-                msg: 'filtro no existe por ese id'
+                msg: 'compañia no existe por ese id'
             });
         }
-
+        
         const newRecord = {
             ...req.body
         };
 
-        const recordAct = await Filter.findByIdAndUpdate(filterId, newRecord,{new: true});
+        const recordAct = await Company.findByIdAndUpdate(companyId, newRecord,{new: true});
 
         res.status(201).json({
             ok: true,
-            filter: recordAct
+            company: recordAct
         })
         
     } catch (error) {
@@ -92,27 +85,27 @@ const changeDataFilter  = async(req, res = response) => {
 }
 
 
-const DeleteFilter = async (req, res = response) => {
+const deleteCompany = async (req, res = response) => {
 
-    const filterId = req.params.id;
+    const companyId = req.params.id;
 
     try {
-        const record = await Filter.findById(filterId);
+        const record = await Company.findById(companyId);
 
         if( !record ) {
             return res.status(404).json ({
                 ok: false,
-                msg: 'filtro no existe por ese id'
+                msg: 'compañia no existe por ese id'
             });
         }
 
 
 
-        await Filter.findByIdAndDelete(filterId);
+        await Company.findByIdAndDelete(companyId);
 
         res.status(200).json({
             ok: true,
-            msg: 'filtro eliminado'
+            msg: 'compañia eliminada'
         });
         
     } catch (error) {
@@ -127,8 +120,8 @@ const DeleteFilter = async (req, res = response) => {
 
 
 module.exports = {
-    getFiltersByMonth,
-    createDataFilter,
-    changeDataFilter,
-    DeleteFilter
+    getCompanies,
+    createCompany,
+    changeCompany,
+    deleteCompany
 }
