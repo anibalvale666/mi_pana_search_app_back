@@ -6,7 +6,7 @@
 
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { getAccountsByBrand, deleteAccount, changeAccount, createAccount } = require("../controllers/accounts");
+const { getAccountsByBrand, deleteAccount, changeAccount, createAccount, getNotPaidAccounts } = require("../controllers/accounts");
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
 
@@ -15,6 +15,10 @@ const router = Router();
 
 // cualquier peticion que se encuentre abajo de esto tienen que pasar opr validar token
 router.use(validarJWT);
+
+
+//cargar todas las cuentas activas
+router.post('/notpaidaccounts',[],getNotPaidAccounts);
 
 
 //cargar cuentas de una determinada marca

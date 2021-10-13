@@ -15,6 +15,10 @@ const CompanySchema = Schema ({
         type: String,
         required: true
     },
+    credit: {
+        type: Boolean,
+        required: true
+    }
 });
 
 CompanySchema.method('toJSON', function()  {

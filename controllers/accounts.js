@@ -2,6 +2,27 @@ const { response } = require('express');
 const Account = require('../models/Account');
 
 
+const getNotPaidAccounts = async(req,res=response) => {
+    try {
+        const accounts = await Account.find({ 
+            paid: false
+            })
+
+        return res.status(200).json({
+            ok: true,
+            accounts
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg: 'Hable con el administrador'
+        })
+    }    
+}
+
+
 const getAccountsByBrand = async(req, res= response) => {
 
     const {brand} = req.body;
@@ -121,5 +142,6 @@ module.exports = {
     getAccountsByBrand,
     createAccount,
     changeAccount,
-    deleteAccount
+    deleteAccount,
+    getNotPaidAccounts
 }
